@@ -1,7 +1,9 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h1>New post</h1>
+    <h1>Coin Register</h1>
+    <p>가격 트래킹하고 싶은 코인을 등록하세요. 코인의 정확한 이름과 수량(숫자만)을 입력하셔야 합니다.</p>
+    <p>코인명 : ex) bitcoin, ethereum, ripple </p>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>

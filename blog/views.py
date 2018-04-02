@@ -3,6 +3,8 @@ from django.utils import timezone
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from coinmarketcap import Market
+from django.db import *
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -16,9 +18,18 @@ def post_detail(request, pk):
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
+        coin_name = request.POST['coin_name']
+        coinmarketcap = Market()
+        coin = (coinmarketcap.ticker(coin_name, convert='KRW'))[0]
         if form.is_valid():
             post = form.save(commit=False)
+            post.total_price_krw = float(coin["price_krw"]) * float(request.POST['quantity'])
+            post.price_krw = coin["price_krw"]
+            post.price_usd = coin["price_usd"]
+            post.price_btc = coin["price_btc"]
+            post.symbol = coin["symbol"]
             post.author = request.user
+            post.publish()
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
@@ -44,7 +55,7 @@ def post_draft_list(request):
     posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
     return render(request, 'blog/post_draft_list.html', {'posts': posts})
 
-@login_required
+#@login_required
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.publish()

@@ -1,15 +1,39 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+ <table border="1">
+         <tr align="center">
+             <th>코인명</th>
+             <th>심볼</th>
+             <th>보유수량</th>
+             <th>총 KRW 가격</th>
+             <th>KRW 가격</th>
+             <th>USD 가격</th>
+             <th>BTC 가격</th>
+             <th>등록시간</th>
+         </tr>
     {% for post in posts %}
-        <div class="post">
+         <tr>
+             <td><a href="{% url 'post_detail' pk=post.pk %}">{{ post.coin_name }}</a></td>
+             <td>{{ post.symbol}}</td>
+             <td>{{ post.quantity }}</td>
+             <td>{{ post.total_price_krw }} 원</td>
+             <td>{{ post.price_krw }} 원</td>
+             <td>$ {{ post.price_usd }}</td>
+             <td>{{ post.price_btc }}</td>
+             <td>{{ post.published_date }}</td>
+         </tr>
+    {% endfor %}
+      </table>
+
+{% endblock %}
+
+
+        <!--<div class="post">
             <div class="date">
               <p>{{ post.published_date }}</p>
             </div>
               <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
               <p>{{ post.text|linebreaksbr }}</p>
         <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approved_comments.count }}</a>
-
-        </div>
-    {% endfor %}
-{% endblock %}
+        </div>!-->

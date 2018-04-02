@@ -3,8 +3,13 @@ from django.utils import timezone
 
 class Post(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    text = models.TextField()
+    coin_name = models.CharField(max_length=200)
+    quantity = models.CharField(max_length=200)
+    total_price_krw = models.FloatField()
+    price_krw = models.FloatField()
+    price_usd = models.FloatField()
+    price_btc = models.FloatField()
+    symbol = models.CharField(max_length=200)
     created_date = models.DateTimeField(default = timezone.now)
     published_date = models.DateTimeField(blank = True, null = True)
 
