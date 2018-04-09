@@ -5,9 +5,11 @@ from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from coinmarketcap import Market
 from django.db import *
+import urllib3
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    user = request.user.id
+    posts = Post.objects.filter(published_date__lte=timezone.now(),author_id=user).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts':posts})
 
 def post_detail(request, pk):
