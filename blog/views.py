@@ -12,6 +12,29 @@ def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now(),author_id=user).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts':posts})
 
+@login_required
+def post_update_all(request):
+    user = request.user.id
+    coin_dicts = Post.objects.filter(published_date__lte=timezone.now(), author_id=user).order_by('published_date').values('coin_name', 'quantity', 'id')
+    for coin_dict in coin_dicts:
+        #print(coin_dict['coin_name'], coin_dict['quantity'], coin_dict['id'])
+        #print(type(coin_dict['coin_name']), coin_dict['quantity'], coin_dict['id'])
+        post = Post.objects.get(published_date__lte=timezone.now(), id=coin_dict['id'])
+        coinmarketcap = Market()
+        coin = (coinmarketcap.ticker(coin_dict['coin_name'], convert='KRW'))[0]
+
+        post.total_price_krw = float(coin["price_krw"]) * float(coin_dict['quantity'])
+        post.price_krw = coin["price_krw"]
+        post.price_usd = coin["price_usd"]
+        post.price_btc = coin["price_btc"]
+        post.author = request.user
+        post.publish()
+        post.save()
+        print(post.coin_name, post.total_price_krw, post.price_krw )
+
+    posts = Post.objects.filter(published_date__lte=timezone.now(),author_id=user).order_by('published_date')
+    return render(request, 'blog/post_list.html', {'posts':posts})
+
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post':post})
