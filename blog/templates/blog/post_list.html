@@ -2,20 +2,21 @@
 
 {% block content %}
 
-<a href="{% url 'post_update_all' %}">update</a>
-    
-
- <table border="1">
-         <tr align="center">
-             <th>코인명</th>
-             <th>심볼</th>
-             <th>보유수량</th>
-             <th>총 KRW 가격</th>
-             <th>KRW 가격</th>
-             <th>USD 가격</th>
-             <th>BTC 가격</th>
-             <th>등록시간</th>
+<div class="table-responsive">
+ <table class="table table-bordered" style="text-align:center">
+     <thead>
+         <tr >
+             <th class="col-sm-1" style="text-align:center">코인명</th>
+              <th class="col-sm-1" style="text-align:center">심볼</th>
+              <th class="col-sm-1" style="text-align:center">보유수량</th>
+             <th class="col-sm-1" style="text-align:center">총 KRW 가격</th>
+             <th class="col-sm-1" style="text-align:center">KRW 가격</th>
+             <th class="col-sm-1" style="text-align:center">USD 가격</th>
+             <th class="col-sm-1" style="text-align:center">BTC 가격</th>
+             <th class="col-sm-2" style="text-align:center">등록시간</th>
          </tr>
+     </thead>
+     <tbody>
     {% for post in posts %}
          <tr>
              <td><a href="{% url 'post_detail' pk=post.pk %}">{{ post.coin_name }}</a></td>
@@ -28,7 +29,9 @@
              <td>{{ post.published_date }}</td>
          </tr>
     {% endfor %}
-      </table>
+     </tbody>
+ </table>
+</div>
 
 {% endblock %}
 
