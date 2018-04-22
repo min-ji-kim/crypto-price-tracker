@@ -1,9 +1,24 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h1>New comment</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
+
+  <div class="jumbotron" style = "background-color : white">
+      <form method="POST" class="post-form">{% csrf_token %}
+        <h1>New memo</h1>
+        <p class="lead">코인에 대한 정보를 메모할 수 있습니다.</p>
+      {{ form.text }}
+      <p style="margin-top : 30px"><button type="submit" class="btn btn-lg btn-success" >메모등록</button></p>
+      </form>
+
+  </div>
+
+<!--    <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Send</button>
     </form>
+
+-->
+
+
+
 {% endblock %}

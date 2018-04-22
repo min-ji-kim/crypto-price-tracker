@@ -13,19 +13,21 @@
              <th class="col-sm-1" style="text-align:center">KRW 가격</th>
              <th class="col-sm-1" style="text-align:center">USD 가격</th>
              <th class="col-sm-1" style="text-align:center">BTC 가격</th>
-             <th class="col-sm-2" style="text-align:center">등록시간</th>
+             <th class="col-sm-2" style="text-align:center">업데이트 시간</th>
          </tr>
      </thead>
      <tbody>
     {% for post in posts %}
          <tr>
+             {% load humanize %}
+
              <td><a href="{% url 'post_detail' pk=post.pk %}">{{ post.coin_name }}</a></td>
              <td>{{ post.symbol}}</td>
              <td>{{ post.quantity }}</td>
-             <td>{{ post.total_price_krw }} 원</td>
-             <td>{{ post.price_krw }} 원</td>
-             <td>$ {{ post.price_usd }}</td>
-             <td>{{ post.price_btc }}</td>
+             <td>{{ post.total_price_krw|floatformat:"0"|intcomma }} 원</td>
+             <td>{{ post.price_krw|floatformat:"0"|intcomma  }} 원</td>
+             <td>$ {{ post.price_usd|floatformat:"-3" }} </td>
+             <td>{{ post.price_btc|floatformat:"-8" }}</td>
              <td>{{ post.published_date }}</td>
          </tr>
     {% endfor %}

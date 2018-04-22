@@ -36,3 +36,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+class Symbol(models.Model):
+    coin_name = models.CharField(max_length=200)
+    symbol = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.coin_name

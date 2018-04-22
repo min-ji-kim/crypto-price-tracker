@@ -1,39 +1,53 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <div class="post">
-        {% if post.published_date %}
-            <div class="date">
-                {{ post.published_date }}
-            </div>
-        {% else %}
-            <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
-        {% endif %}
+
+     <div class="jumbotron" style = "background-color : white">
+        <h1>Coin Info</h1>
+        <p class="lead">등록하신 코인을 삭제하거나 수정할 수 있습니다. <br/> 변경하실 코인명(영문)이나 수량(숫자)을 입력 후 코인수정 버튼을 클릭해주세요. </p>
+
+    <table class="table table-striped">
+      <tr>
+          <td><b>업데이트 날짜</b></td>
+          <td>{{ post.published_date }}</td>
+      </tr>
+      <tr>
+          <td><b>코인명</b></td>
+          <td>{{ post.coin_name }}</td>
+      </tr>
+      <tr>
+          <td><b>보유수량</b></td>
+          <td>{{ post.quantity }} 개</td>
+      </tr>
+    </table>
         {% if user.is_authenticated %}
-            <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+         <p><a class="btn btn-lg btn-success" href="{% url 'post_edit' pk=post.pk %}" role="button">코인수정</a>
+         <a class="btn btn-lg btn-success" href="{% url 'post_remove' pk=post.pk %}" role="button">코인삭제</a></p>
         {% endif %}
-        <h1>{{ post.coin_name }}</h1>
-        <h2>수량 : {{ post.quantity }} 개</h2>
-    </div>
     <hr>
-    <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Memo</a>
+    <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Memo 추가</a>
+    <div style="margin:20px"></div>
     {% for comment in post.comments.all %}
     {% if user.is_authenticated or comment.approved_comment %}
     <div class="comment">
-        <div class="date">
-            {{ comment.created_date }}
-            {% if not comment.approved_comment %}
-                <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-                <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
-            {% endif %}
-        </div>
-        <strong>{{ comment.author }}</strong>
-        <p>{{ comment.text|linebreaks }}</p>
+
+    <table class="table table-striped">
+
+      <tr>
+          <td>{{ comment.text|linebreaks }}</td>
+          <td  style = "width:30%">{{ comment.created_date }}</td>
+          {% if not comment.approved_comment %}
+          <td  style = "width:6%"><a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a></td>
+          {% endif %}
+
+      </tr>
+    </table>
     </div>
     {% endif %}
-{% empty %}
-{% endfor %}
+    {% empty %}
+    {% endfor %}
+
+     </div>
 
 
 
